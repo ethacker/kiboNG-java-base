@@ -31,18 +31,22 @@ public class AdminController {
 
     @RequestMapping(value = {"/","/index"},method = {RequestMethod.POST, RequestMethod.GET})
     public ResponseEntity<String> index(HttpServletRequest request, HttpServletResponse response, Model model) {
-//        try {
-//            AdminControllerHelper adh = adminControllerHelperFactory(spice, sharedSecret);
-//            if (!adh.securityCheck(request, response)) {
-//                log.warn("Not authorized");
-//                return new ResponseEntity<String>("unauthorized", HttpStatus.UNAUTHORIZED);
-//            }
-//        } catch (Exception e) {
-//            log.warn("Validation exception: " + e.getMessage());
-//            return new ResponseEntity<String>("unauthorized",HttpStatus.UNAUTHORIZED);
-//        }
+        try {
+            AdminControllerHelper adh = adminControllerHelperFactory(spice, sharedSecret);
+            if (!adh.securityCheck(request, response)) {
+                log.warn("Not authorized");
+                return new ResponseEntity<String>("unauthorized", HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception e) {
+            log.warn("Validation exception: " + e.getMessage());
+            return new ResponseEntity<String>("unauthorized",HttpStatus.UNAUTHORIZED);
+        }
 
         return new ResponseEntity<String>("Hello world!",HttpStatus.OK);
+    }
+
+    private AdminControllerHelper adminControllerHelperFactory(String spice, String sharedSecret) {
+        return new AdminControllerHelper(spice, sharedSecret);
     }
 
 }
